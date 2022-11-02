@@ -34,12 +34,18 @@ body {
 }
 
 .output {
+    display: flex; justify-content: start; align-items: flex-start;
     background-color: var(--output-screen); color: var(--output);
-    width: 95%; height: 60px;
-    border: 1px solid #000; border-radius: 3px;
+    width: 95%; height: 60px; padding: 5px;
+    border: 1px solid #000; border-radius: 3px; 
 }
 
-.button, .operator, .key {
+.calcOutputDisplay {
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.button, .operator{
     font-family: inherit;
     background-color: var(--dark-grey); color: var(--white);
     display: flex; justify-content: center; align-items: center;
