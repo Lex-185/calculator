@@ -11,39 +11,38 @@
     <div class="container">
         <div class="calc-container">
             <div class="output">
-                <div class="calcInputDisplay">0</div>
-                <div class="calcOutputDisplay"></div>
-                
+                <div class="inputDisplay" id="input-display">0</div>
+                <div class="resultDisplay" id="result-display"></div>
             </div>
 
             <div class="input">
                 <div class="row">
-                    <button class="number">7</button>
-                    <button class="number">8</button>
-                    <button class="number">9</button>
-                    <button id="delete" class="key">DEL</button>
-                    <button id="clear" class="key">AC</button>
+                    <button class="number" data-number="7">7</button>
+                    <button class="number" data-number="8">8</button>
+                    <button class="number" data-number="9">9</button>
+                    <button class="key" id="delete">DEL</button>
+                    <button class="key" id="all-clear">AC</button>
                 </div>
                 <div class="row">
-                    <button class="number">4</button>
-                    <button class="number">5</button>
-                    <button class="number">6</button>
-                    <button class="operator">x</button>
-                    <button class="operator">÷</button>
+                    <button class="number" data-number="4">4</button>
+                    <button class="number" data-number="5">5</button>
+                    <button class="number" data-number="6">6</button>
+                    <button class="operator" data-op="x">x</button>
+                    <button class="operator" data-op="÷">÷</button>
                 </div>
                 <div class="row">
-                    <button class="number">1</button>
-                    <button class="number">2</button>
-                    <button class="number">3</button>
-                    <button class="operator">+</button>
-                    <button class="operator">-</button>
+                    <button class="number" data-number="1">1</button>
+                    <button class="number" data-number="2">2</button>
+                    <button class="number" data-number="3">3</button>
+                    <button class="operator" data-op="+">+</button>
+                    <button class="operator" data-op="-">-</button>
                 </div>
                 <div class="row">
-                    <button class="number">0</button>
-                    <button id="decimal" class="number">.</button>
+                    <button class="number" data-number="0">0</button>
+                    <button class="number" data-number=".">.</button>
                     <button class="key">x10^x</button>
-                    <button id="answer" class="key">Ans</button>
-                    <button id="equals" class="key">=</button>
+                    <button class="key" id="answer">Ans</button>
+                    <button class="key" id="equals">=</button>
                 </div>
             </div>
         </div>
