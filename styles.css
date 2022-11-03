@@ -45,7 +45,7 @@ body {
     margin-left: auto;
 }
 
-.button, .operator{
+.number, .operator, .key{
     font-family: inherit;
     background-color: var(--dark-grey); color: var(--white);
     display: flex; justify-content: center; align-items: center;
@@ -53,7 +53,7 @@ body {
     border: 1px solid #000; border-radius: 3px;
 }
 
-.button:hover {
+.number:hover, .operator:hover, .key:hover {
     background-color: var(--white); color: var(--dark-grey);
 }
 
