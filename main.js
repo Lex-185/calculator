@@ -1,47 +1,34 @@
 // Vars
-const calcInputDisplay = document.querySelector('.calcInputDisplay');
-const calcOutputDisplay = document.querySelector('.calcOutputDisplay');
+const inputDisplay = document.querySelector('.inputDisplay');
+const outputDisplay = document.querySelector('.outputDisplay');
+const numbers = document.querySelectorAll('.number');
+const operators = document.querySelectorAll('.operator')
 
+// Get number
+let clickedValue = '';
+let storedValue = '';
+numbers.forEach(number => {
+    number.addEventListener('click', (e) => {getNumber(e.target.value)})
+});
 
-const decimal = document.getElementById('decimal');
+const getNumber = (value) => {
+    clickedValue += value;
+    inputDisplay.textContent = clickedValue;
+};
 
-const calcButtons = document.querySelectorAll('.button');
-const calcOperators = document.querySelectorAll('.operator')
-let placeholder = '';
-let storedValue = ''
+// Get operator
+let clickedOperator = '';
+operators.forEach(operator => {
+    operator.addEventListener('click', (e) => getOperator(e.target.value))
+});
 
-calcButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        buttonValue(e.target.textContent);
-    })
-})
-
-calcOperators.forEach(operator => {
-    operator.addEventListener('click', (e) => {
-        operatorValue(e.target.textContent);
-    })
-})
-
-const buttonValue = (number) => {
-    if (placeholder.length <= 12) {
-        placeholder += number
-        calcInputDisplay.textContent = placeholder
-    }
+const getOperator = (operatorValue) => {
+    clickedOperator = operatorValue;
+    storedValue = clickedValue;
+    inputDisplay.textContent = `${storedValue} ${clickedOperator}`
 }
-
-const operatorValue = (mathKey) => {
-    operator = mathKey;
-    storedValue = placeholder;
-    calcOutputDisplay.textContent = `${storedValue} ${operator}`
-    placeholder = '';
-}
-
-// Equals
-const equals = document.getElementById('equals');
-equals.addEventListener('click', operate)
 
 // Basic math operators
-let operator = ''
 const add = (x,y) => {return x + y};
 const sub = (x,y) => {return x - y};
 const multiply = (x,y) => {return x * y};
@@ -51,23 +38,25 @@ const remainder = (x,y) => {return x % y};
 // Operate function: Takes an operator and 2 numbers. Calls function on the 2 numbers
 function operate() {
     let x = parseInt(storedValue)
-    let y = parseInt(placeholder)
+    let y = parseInt(currentValue)
 
     if (operator === '+') {
-        console.log(x, y);
-        calcInputDisplay.textContent = add(x, y);
+        return add(x, y);
     } else if (operator === '-') {
-        calcInputDisplay.textContent = sub(x, y);
+        return sub(x, y);
     } else if (operator === 'x') {
-        calcInputDisplay.textContent = multiply(x, y);
+        return multiply(x, y);
     } else if (operator === '÷') {
-        calcInputDisplay.textContent = divide(x, y);
+        return divide(x, y);
     } else if (operator === '%') {
-        calcInputDisplay.textContent = remainder(x, y);
+        return remainder(x, y);
     }
-    calcOutputDisplay.textContent = ''
-    
 }
 
 // All Clear
-const allClear = document.getElementById('clear');
+const allClearBtn = document.getElementById('clear');
+const allClear = () => {
+    inputDisplay.textContent = '0';
+    outputDisplay.textContent = '';
+}
+allClearBtn.addEventListener('click', allClear)
