@@ -57,7 +57,7 @@ body {
     background-color: var(--white); color: var(--dark-grey);
 }
 
-#delete, #clear {
+#delete, #all-clear {
     background-color: var(--orange); color: #000; border: 1px solid var(--dark-orange);
 }
 
