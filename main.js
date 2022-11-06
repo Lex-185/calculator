@@ -104,7 +104,7 @@ let calculatorButtons = [
     {
         name: 'percent',
         symbol: '%',
-        formula: '/100',
+        formula: '%',
         type: 'number'
     },
     {
@@ -180,21 +180,92 @@ const operate = (btn) => {
     } 
     
     else if (btn.type === 'operate') {
-        let joinResult = calcData.result.join(' ');
-        let newResult = joinResult.split(``);
-        let calculateResult = calculate(newResult);
-        
-        calcData.operation = [];
-        calcData.result = [];
+        let joinResult = calcData.result.join('');
+        let calculateResult = ''
 
-        calcData.operation.push(calculateResult);
-        calcData.result.push(calculateResult);
+        // Update calculator data 
+        const updateData = () => {
+            calcData.operation.push(calculateResult);
+            calcData.result.push(calculateResult);
+        }
 
-        updateResult(calculateResult)
+        if (joinResult.includes('+')) {
+            let newResult = joinResult.split('+');
+            x = parseInt(newResult[0]); 
+            y = parseInt(newResult[1])
+    
+            let calculateResult = calculate('+', x, y);
+            console.log(newResult, calculateResult);
+    
+            updateData()
+            resetData()
+            updateResult(calculateResult)
+            return
+        } 
 
-        return;
+        else if (joinResult.includes('-')) {
+            let newResult = joinResult.split('-');
+            x = parseInt(newResult[0]); 
+            y = parseInt(newResult[1])
+    
+            let calculateResult = calculate('-', x, y);
+            console.log(newResult, calculateResult);
+    
+            updateData()
+            resetData()
+            updateResult(calculateResult)
+            return
+        }
+
+        else if (joinResult.includes('*')) {
+            let newResult = joinResult.split('*');
+            x = parseInt(newResult[0]); 
+            y = parseInt(newResult[1])
+    
+            let calculateResult = calculate('*', x, y);
+            console.log(newResult, calculateResult);
+    
+            updateData()
+            resetData()
+            updateResult(calculateResult)
+            return
+        } 
+
+        else if (joinResult.includes('/')) {
+            let newResult = joinResult.split('/');
+            x = parseInt(newResult[0]); 
+            y = parseInt(newResult[1])
+    
+            let calculateResult = calculate('/', x, y);
+            console.log(newResult, calculateResult);
+    
+            updateData()
+            resetData()
+            updateResult(calculateResult)
+            return
+        }
+
+        else if (joinResult.includes('%')) {
+            let newResult = joinResult.split('%');
+            x = parseInt(newResult[0]); 
+            y = parseInt(newResult[1])
+    
+            let calculateResult = calculate('%', x, y);
+            console.log(newResult, calculateResult);
+    
+            updateData()
+            resetData()
+            updateResult(calculateResult)
+            return
+        }
     }
     updateInput(calcData.operation.join(''))
+}
+
+// Reset calculator data
+const resetData = () => {
+    calcData.operation = [];
+    calcData.result = [];
 }
 
 // Update output display element
@@ -217,18 +288,22 @@ const remainder = (x,y) => {return x % y};
 // Calculate function
 const calculate = (operator, x, y) => {
     if (operator === '+') {
-        add(x, y)
+        return add(x, y)
     } 
     
     else if (operator === '-') {
-        sub(x, y)
+        return sub(x, y)
     }
 
-    else if (operator === 'x') {
-        multiply(x, y)
+    else if (operator === '*') {
+        return multiply(x, y)
     }
     
-    else if (operator === '÷') {
-        divide(x, y)
+    else if (operator === '/') {
+        return divide(x, y)
+    } 
+
+    else if (operator === '%') {
+        return remainder(x, y)
     }
 }
