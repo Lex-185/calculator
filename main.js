@@ -102,6 +102,12 @@ let calculatorButtons = [
         type: 'number'
     },
     {
+        name: 'answer',
+        symbol: 'Ans',
+        formula: false,
+        type: 'key'
+    },
+    {
         name: 'percent',
         symbol: '%',
         formula: '%',
@@ -169,13 +175,15 @@ const operate = (btn) => {
     
     else if (btn.type === 'key') {
         if (btn.name === 'clear') {
-            calcData.operation = [];
-            calcData.result = [];
+            resetData()
             updateResult()
         }
         if (btn.name === 'delete') {
             calcData.operation.pop()
             calcData.result.pop();
+        }
+        if (btn.name === 'answer') {
+            
         }
     } 
     
@@ -195,11 +203,12 @@ const operate = (btn) => {
             y = parseInt(newResult[1])
     
             let calculateResult = calculate('+', x, y);
+            formattedResult = formatResult(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
             resetData()
-            updateResult(calculateResult)
+            updateResult(formattedResult)
             return
         } 
 
@@ -209,11 +218,12 @@ const operate = (btn) => {
             y = parseInt(newResult[1])
     
             let calculateResult = calculate('-', x, y);
+            formattedResult = formatResult(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
             resetData()
-            updateResult(calculateResult)
+            updateResult(formattedResult)
             return
         }
 
@@ -223,11 +233,12 @@ const operate = (btn) => {
             y = parseInt(newResult[1])
     
             let calculateResult = calculate('*', x, y);
+            formattedResult = formatResult(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
             resetData()
-            updateResult(calculateResult)
+            updateResult(formattedResult)
             return
         } 
 
@@ -237,11 +248,12 @@ const operate = (btn) => {
             y = parseInt(newResult[1])
     
             let calculateResult = calculate('/', x, y);
+            formattedResult = formatResult(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
             resetData()
-            updateResult(calculateResult)
+            updateResult(formattedResult)
             return
         }
 
@@ -251,11 +263,12 @@ const operate = (btn) => {
             y = parseInt(newResult[1])
     
             let calculateResult = calculate('%', x, y);
+            formattedResult = formatResult(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
             resetData()
-            updateResult(calculateResult)
+            updateResult(formattedResult)
             return
         }
     }
@@ -306,4 +319,44 @@ const calculate = (operator, x, y) => {
     else if (operator === '%') {
         return remainder(x, y)
     }
+}
+
+// Format result 
+const formatResult = (calculateResult) => {
+    const maxLength = 10;
+    const outputLength = 5
+
+    if (resultLength(calculateResult) > maxLength) {
+        if (isFloat(calculateResult)) {
+            const resultInt = parseInt(calculateResult);
+            const resultIntLength = resultLength(resultInt)
+
+            if (resultIntLength > maxLength) {
+                return calculateResult.toPrecision(outputLength)
+            }
+
+            else {
+                const decimalLength = maxLength - resultIntLength
+                return calculateResult.toFixed(decimalLength)
+            }
+        } 
+        
+        else {
+            return calculateResult.toPrecision(outputLength)
+        }
+    }
+
+    else {
+        return calculateResult
+    }
+}
+
+// Float/Int
+const isFloat = (number) => {
+    return number % 1 !=0;
+}
+
+// result length
+const resultLength = (number) => {
+    return number.toString().length;
 }
