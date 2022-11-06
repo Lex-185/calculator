@@ -110,8 +110,8 @@ let calculatorButtons = [
     {
         name: 'equals',
         symbol: '=',
-        formula: 'operate',
-        type: 'key'
+        formula: false,
+        type: 'operate'
     },
 ];
 
@@ -139,6 +139,74 @@ const createButton = () => {
 
 createButton()
 
+// Event listeners
+inputElement.addEventListener('click', (e) => {
+    const selectBtn = e.target;
+    calculatorButtons.forEach(btn => {
+        if (btn.name == selectBtn.id) {
+            operate(btn);
+        }
+    })
+})
+
+// Calculator data
+let calcData = {
+    operation : [],
+    result : []
+}
+
+// Operate function 
+const operate = (btn) => {
+    if (btn.type === 'operator') {
+        calcData.operation.push(btn.symbol);
+        calcData.result.push(btn.formula);
+    } 
+    
+    else if (btn.type === 'number') {
+        calcData.operation.push(btn.symbol);
+        calcData.result.push(btn.formula);
+    } 
+    
+    else if (btn.type === 'key') {
+        if (btn.name === 'clear') {
+            calcData.operation = [];
+            calcData.result = [];
+            updateResult()
+        }
+        if (btn.name === 'delete') {
+            calcData.operation.pop()
+            calcData.result.pop();
+        }
+    } 
+    
+    else if (btn.type === 'operate') {
+        let joinResult = calcData.result.join(' ');
+        let newResult = joinResult.split(``);
+        let calculateResult = calculate(newResult);
+        
+        calcData.operation = [];
+        calcData.result = [];
+
+        calcData.operation.push(calculateResult);
+        calcData.result.push(calculateResult);
+
+        updateResult(calculateResult)
+
+        return;
+    }
+    updateInput(calcData.operation.join(''))
+}
+
+// Update output display element
+const updateResult = (result) => {
+    resultDisplayElement.innerHTML = result
+}
+
+// Update input display element
+const updateInput = (input) => {
+    inputDisplayElement.innerHTML = input
+}
+
 // Basic math operators
 const add = (x,y) => {return x + y};
 const sub = (x,y) => {return x - y};
@@ -146,17 +214,21 @@ const multiply = (x,y) => {return x * y};
 const divide = (x,y) => {return x / y};
 const remainder = (x,y) => {return x % y};
 
-// Operate function: Takes an operator and 2 numbers. Calls function on the 2 numbers
-function operate(operator, x, y) {
+// Calculate function
+const calculate = (operator, x, y) => {
     if (operator === '+') {
-        return add(x, y);
-    } else if (operator === '-') {
-        return sub(x, y);
-    } else if (operator === 'x') {
-        return multiply(x, y);
-    } else if (operator === '÷') {
-        return divide(x, y);
-    } else if (operator === '%') {
-        return remainder(x, y);
+        add(x, y)
+    } 
+    
+    else if (operator === '-') {
+        sub(x, y)
+    }
+
+    else if (operator === 'x') {
+        multiply(x, y)
+    }
+    
+    else if (operator === '÷') {
+        divide(x, y)
     }
 }
