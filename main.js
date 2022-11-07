@@ -156,11 +156,20 @@ inputElement.addEventListener('click', (e) => {
     })
 })
 
+window.addEventListener('keydown', () => {
+   
+})
+
 // Calculator data
 let calcData = {
     operation : [],
     result : []
 }
+
+// Store Answer
+let ansData = {
+    storage : []
+} 
 
 // Operate function 
 const operate = (btn) => {
@@ -177,6 +186,7 @@ const operate = (btn) => {
     else if (btn.type === 'key') {
         if (btn.name === 'clear') {
             resetData()
+            resetStorage()
             updateResult('')
         }
         if (btn.name === 'delete') {
@@ -185,7 +195,8 @@ const operate = (btn) => {
         }
 
         if (btn.name === 'answer') {
-           
+           calcData.operation.push(ansData.storage)
+           calcData.result.push(ansData.storage)
         }
     } 
     
@@ -206,8 +217,9 @@ const operate = (btn) => {
     
             let calculateResult = calculate('+', x, y);
             formattedResult = formatResult(calculateResult)
+            ansData.storage.push(calculateResult)
             console.log(newResult, calculateResult);
-    
+
             updateData()
             resetData()
             updateResult(formattedResult)
@@ -221,6 +233,7 @@ const operate = (btn) => {
     
             let calculateResult = calculate('-', x, y);
             formattedResult = formatResult(calculateResult)
+            ansData.storage.push(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
@@ -236,6 +249,7 @@ const operate = (btn) => {
     
             let calculateResult = calculate('*', x, y);
             formattedResult = formatResult(calculateResult)
+            ansData.storage.push(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
@@ -251,6 +265,7 @@ const operate = (btn) => {
     
             let calculateResult = calculate('/', x, y);
             formattedResult = formatResult(calculateResult)
+            ansData.storage.push(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
@@ -266,6 +281,7 @@ const operate = (btn) => {
     
             let calculateResult = calculate('%', x, y);
             formattedResult = formatResult(calculateResult)
+            ansData.storage.push(calculateResult)
             console.log(newResult, calculateResult);
     
             updateData()
@@ -281,6 +297,10 @@ const operate = (btn) => {
 const resetData = () => {
     calcData.operation = [];
     calcData.result = [];
+}
+
+const resetStorage = () => {
+    ansData.storage = [];
 }
 
 // Update output display element
