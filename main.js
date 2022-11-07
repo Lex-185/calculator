@@ -156,9 +156,61 @@ inputElement.addEventListener('click', (e) => {
     })
 })
 
+// Keydown event
 window.addEventListener('keydown', () => {
    
 })
+
+// Basic math operators
+let result = ''
+
+const add = (...num) => {
+    result = num.reduce((x, y) => x + y)
+    return result
+};
+
+const sub = (...num) => {
+    result = num.reduce((x, y) => x - y)
+    return result
+};
+
+const multiply = (...num) => {
+    result = num.reduce((x, y) => x * y)
+    return result
+};
+
+const divide = (...num) => {
+    result = num.reduce((x,y) => x / y)
+    return result
+};
+
+const remainder = (...num) => {
+    result = num.reduce((x,y) => x % y)
+    return result
+};
+
+// Calculate function
+const calculate = (operator, ...num) => {
+    if (operator === '+') {
+        return add(...num)
+    } 
+    
+    else if (operator === '-') {
+        return sub(...num)
+    }
+
+    else if (operator === '*') {
+        return multiply(...num)
+    }
+    
+    else if (operator === '/') {
+        return divide(...num)
+    } 
+
+    else if (operator === '%') {
+        return remainder(...num)
+    }
+}
 
 // Calculator data
 let calcData = {
@@ -214,7 +266,7 @@ const operate = (btn) => {
             let newResult = joinResult.split('+');
             x = parseFloat(newResult[0]); 
             y = parseFloat(newResult[1])
-    
+            
             let calculateResult = calculate('+', x, y);
             formattedResult = formatResult(calculateResult)
             ansData.storage.push(calculateResult)
@@ -311,36 +363,6 @@ const updateResult = (result) => {
 // Update input display element
 const updateInput = (input) => {
     inputDisplayElement.innerHTML = input
-}
-
-// Basic math operators
-const add = (x,y) => {return x + y};
-const sub = (x,y) => {return x - y};
-const multiply = (x,y) => {return x * y};
-const divide = (x,y) => {return x / y};
-const remainder = (x,y) => {return x % y};
-
-// Calculate function
-const calculate = (operator, x, y) => {
-    if (operator === '+') {
-        return add(x, y)
-    } 
-    
-    else if (operator === '-') {
-        return sub(x, y)
-    }
-
-    else if (operator === '*') {
-        return multiply(x, y)
-    }
-    
-    else if (operator === '/') {
-        return divide(x, y)
-    } 
-
-    else if (operator === '%') {
-        return remainder(x, y)
-    }
 }
 
 // Format result 
