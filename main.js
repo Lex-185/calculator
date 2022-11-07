@@ -125,6 +125,7 @@ let calculatorButtons = [
 const inputDisplayElement = document.querySelector('#inputDisplay');
 const resultDisplayElement = document.querySelector('#resultDisplay');
 const inputElement = document.querySelector('#calcInput')
+const decimalElement = document.querySelector('#decimal');
 
 // Create Buttons
 const createButton = () => {
@@ -176,14 +177,15 @@ const operate = (btn) => {
     else if (btn.type === 'key') {
         if (btn.name === 'clear') {
             resetData()
-            updateResult()
+            updateResult('')
         }
         if (btn.name === 'delete') {
             calcData.operation.pop()
             calcData.result.pop();
         }
+
         if (btn.name === 'answer') {
-            
+           
         }
     } 
     
@@ -199,8 +201,8 @@ const operate = (btn) => {
 
         if (joinResult.includes('+')) {
             let newResult = joinResult.split('+');
-            x = parseInt(newResult[0]); 
-            y = parseInt(newResult[1])
+            x = parseFloat(newResult[0]); 
+            y = parseFloat(newResult[1])
     
             let calculateResult = calculate('+', x, y);
             formattedResult = formatResult(calculateResult)
@@ -214,8 +216,8 @@ const operate = (btn) => {
 
         else if (joinResult.includes('-')) {
             let newResult = joinResult.split('-');
-            x = parseInt(newResult[0]); 
-            y = parseInt(newResult[1])
+            x = parseFloat(newResult[0]); 
+            y = parseFloat(newResult[1])
     
             let calculateResult = calculate('-', x, y);
             formattedResult = formatResult(calculateResult)
@@ -229,8 +231,8 @@ const operate = (btn) => {
 
         else if (joinResult.includes('*')) {
             let newResult = joinResult.split('*');
-            x = parseInt(newResult[0]); 
-            y = parseInt(newResult[1])
+            x = parseFloat(newResult[0]); 
+            y = parseFloat(newResult[1])
     
             let calculateResult = calculate('*', x, y);
             formattedResult = formatResult(calculateResult)
@@ -244,8 +246,8 @@ const operate = (btn) => {
 
         else if (joinResult.includes('/')) {
             let newResult = joinResult.split('/');
-            x = parseInt(newResult[0]); 
-            y = parseInt(newResult[1])
+            x = parseFloat(newResult[0]); 
+            y = parseFloat(newResult[1])
     
             let calculateResult = calculate('/', x, y);
             formattedResult = formatResult(calculateResult)
@@ -259,8 +261,8 @@ const operate = (btn) => {
 
         else if (joinResult.includes('%')) {
             let newResult = joinResult.split('%');
-            x = parseInt(newResult[0]); 
-            y = parseInt(newResult[1])
+            x = parseFloat(newResult[0]); 
+            y = parseFloat(newResult[1])
     
             let calculateResult = calculate('%', x, y);
             formattedResult = formatResult(calculateResult)
@@ -323,7 +325,7 @@ const calculate = (operator, x, y) => {
 
 // Format result 
 const formatResult = (calculateResult) => {
-    const maxLength = 10;
+    const maxLength = 6;
     const outputLength = 5
 
     if (resultLength(calculateResult) > maxLength) {
