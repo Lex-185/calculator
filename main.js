@@ -165,27 +165,27 @@ window.addEventListener('keydown', () => {
 let result = ''
 
 const add = (...num) => {
-    result = num.reduce((x, y) => x + y)
+    result = num.reduce((x, y) => parseFloat(x) + parseFloat(y))
     return result
 };
 
 const sub = (...num) => {
-    result = num.reduce((x, y) => x - y)
+    result = num.reduce((x, y) => parseFloat(x) -parseFloat(y))
     return result
 };
 
 const multiply = (...num) => {
-    result = num.reduce((x, y) => x * y)
+    result = num.reduce((x, y) => parseFloat(x) * parseInt(y))
     return result
 };
 
 const divide = (...num) => {
-    result = num.reduce((x,y) => x / y)
+    result = num.reduce((x,y) => parseFloat(x) /parseFloat(y))
     return result
 };
 
 const remainder = (...num) => {
-    result = num.reduce((x,y) => x % y)
+    result = num.reduce((x,y) => parseFloat(x) %parseFloat(y))
     return result
 };
 
@@ -253,25 +253,22 @@ const operate = (btn) => {
     } 
     
     else if (btn.type === 'operate') {
-        let joinResult = calcData.result.join('');
-        let calculateResult = ''
-
         // Update calculator data 
         const updateData = () => {
             calcData.operation.push(calculateResult);
             calcData.result.push(calculateResult);
         }
 
+        let joinResult = calcData.result.join('');
+        let calculateResult = ''
+
         if (joinResult.includes('+')) {
             let newResult = joinResult.split('+');
-            x = parseFloat(newResult[0]); 
-            y = parseFloat(newResult[1])
-            
-            let calculateResult = calculate('+', x, y);
-            formattedResult = formatResult(calculateResult)
-            ansData.storage.push(calculateResult)
-            console.log(newResult, calculateResult);
+            let calculateResult = calculate('+', ...newResult);
+            let formattedResult = formatResult(calculateResult)
 
+            ansData.storage.push(calculateResult)
+            
             updateData()
             resetData()
             updateResult(formattedResult)
@@ -280,13 +277,10 @@ const operate = (btn) => {
 
         else if (joinResult.includes('-')) {
             let newResult = joinResult.split('-');
-            x = parseFloat(newResult[0]); 
-            y = parseFloat(newResult[1])
-    
-            let calculateResult = calculate('-', x, y);
-            formattedResult = formatResult(calculateResult)
+            let calculateResult = calculate('-', ...newResult);
+            let formattedResult = formatResult(calculateResult)
+
             ansData.storage.push(calculateResult)
-            console.log(newResult, calculateResult);
     
             updateData()
             resetData()
@@ -296,13 +290,10 @@ const operate = (btn) => {
 
         else if (joinResult.includes('*')) {
             let newResult = joinResult.split('*');
-            x = parseFloat(newResult[0]); 
-            y = parseFloat(newResult[1])
-    
-            let calculateResult = calculate('*', x, y);
-            formattedResult = formatResult(calculateResult)
+            let calculateResult = calculate('*', ...newResult);
+            let formattedResult = formatResult(calculateResult)
+
             ansData.storage.push(calculateResult)
-            console.log(newResult, calculateResult);
     
             updateData()
             resetData()
@@ -312,13 +303,10 @@ const operate = (btn) => {
 
         else if (joinResult.includes('/')) {
             let newResult = joinResult.split('/');
-            x = parseFloat(newResult[0]); 
-            y = parseFloat(newResult[1])
-    
-            let calculateResult = calculate('/', x, y);
-            formattedResult = formatResult(calculateResult)
+            let calculateResult = calculate('/', ...newResult);
+            let formattedResult = formatResult(calculateResult)
+
             ansData.storage.push(calculateResult)
-            console.log(newResult, calculateResult);
     
             updateData()
             resetData()
@@ -328,13 +316,10 @@ const operate = (btn) => {
 
         else if (joinResult.includes('%')) {
             let newResult = joinResult.split('%');
-            x = parseFloat(newResult[0]); 
-            y = parseFloat(newResult[1])
-    
-            let calculateResult = calculate('%', x, y);
-            formattedResult = formatResult(calculateResult)
+            let calculateResult = calculate('%', ...newResult);
+            let formattedResult = formatResult(calculateResult)
+
             ansData.storage.push(calculateResult)
-            console.log(newResult, calculateResult);
     
             updateData()
             resetData()
