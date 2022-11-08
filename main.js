@@ -125,7 +125,6 @@ let calculatorButtons = [
 const inputDisplayElement = document.querySelector('#inputDisplay');
 const resultDisplayElement = document.querySelector('#resultDisplay');
 const inputElement = document.querySelector('#calcInput')
-const decimalElement = document.querySelector('#decimal');
 
 // Create Buttons
 const createButton = () => {
@@ -157,9 +156,47 @@ inputElement.addEventListener('click', (e) => {
 })
 
 // Keydown event
-window.addEventListener('keydown', () => {
-   
+window.addEventListener('keydown', (e) => {
+   keyPress(e)
 })
+
+// keypress 
+const keyPress = (e) => {
+    if (e.key === 'Enter') {
+        validateOperators()
+    }
+
+    if (e.key === 'Backspace') {
+        deleteDataValues()
+        updateInput(calcData.operation)
+    }
+
+    if (e.key >= 0 && e.key <= 9) {
+        inputData(e.key)
+        updateInput(calcData.operation)
+    } 
+
+    if (e.key === '+' || e.key === '-') {
+        inputData(e.key)
+        updateInput(calcData.operation)
+    }
+
+    if (e.key === '*') {
+        inputData(e.key)
+        updateInput(calcData.operation)
+    } 
+
+    if (e.key === '/') {
+        inputData(e.key)
+        updateInput(calcData.operation)
+        
+    }
+
+    if (e.key === '%') {
+        inputData(e.key)
+        updateInput(calcData.operation)
+    }
+}
 
 // Basic math operators
 let result = ''
@@ -242,92 +279,107 @@ const operate = (btn) => {
             updateResult('')
         }
         if (btn.name === 'delete') {
-            calcData.operation.pop()
-            calcData.result.pop();
+            deleteDataValues()
         }
 
         if (btn.name === 'answer') {
-           calcData.operation.push(ansData.storage)
-           calcData.result.push(ansData.storage)
+           inputData(ansData.storage)
+           resultDisplayElement.innerHTML = ''
         }
     } 
     
     else if (btn.type === 'operate') {
-        // Update calculator data 
-        const updateData = () => {
-            calcData.operation.push(calculateResult);
-            calcData.result.push(calculateResult);
-        }
-
-        let joinResult = calcData.result.join('');
-        let calculateResult = ''
-
-        if (joinResult.includes('+')) {
-            let newResult = joinResult.split('+');
-            let calculateResult = calculate('+', ...newResult);
-            let formattedResult = formatResult(calculateResult)
-
-            ansData.storage.push(calculateResult)
-            
-            updateData()
-            resetData()
-            updateResult(formattedResult)
-            return
-        } 
-
-        else if (joinResult.includes('-')) {
-            let newResult = joinResult.split('-');
-            let calculateResult = calculate('-', ...newResult);
-            let formattedResult = formatResult(calculateResult)
-
-            ansData.storage.push(calculateResult)
-    
-            updateData()
-            resetData()
-            updateResult(formattedResult)
-            return
-        }
-
-        else if (joinResult.includes('*')) {
-            let newResult = joinResult.split('*');
-            let calculateResult = calculate('*', ...newResult);
-            let formattedResult = formatResult(calculateResult)
-
-            ansData.storage.push(calculateResult)
-    
-            updateData()
-            resetData()
-            updateResult(formattedResult)
-            return
-        } 
-
-        else if (joinResult.includes('/')) {
-            let newResult = joinResult.split('/');
-            let calculateResult = calculate('/', ...newResult);
-            let formattedResult = formatResult(calculateResult)
-
-            ansData.storage.push(calculateResult)
-    
-            updateData()
-            resetData()
-            updateResult(formattedResult)
-            return
-        }
-
-        else if (joinResult.includes('%')) {
-            let newResult = joinResult.split('%');
-            let calculateResult = calculate('%', ...newResult);
-            let formattedResult = formatResult(calculateResult)
-
-            ansData.storage.push(calculateResult)
-    
-            updateData()
-            resetData()
-            updateResult(formattedResult)
-            return
-        }
+        validateOperators()
     }
     updateInput(calcData.operation.join(''))
+}
+
+// Validate operators
+const validateOperators = () => {
+    const updateData = () => {
+        inputData(calculateResult)
+    }
+
+    let joinResult = calcData.result.join('');
+    let calculateResult = '';
+
+    if (joinResult.includes('+')) {
+        let newResult = joinResult.split('+');
+        let calculateResult = calculate('+', ...newResult);
+        let formattedResult = formatResult(calculateResult)
+
+        ansData.storage.push(calculateResult)
+        
+        updateData()
+        resetData()
+        updateResult(formattedResult)
+        return
+    } 
+
+    else if (joinResult.includes('-')) {
+        let newResult = joinResult.split('-');
+        let calculateResult = calculate('-', ...newResult);
+        let formattedResult = formatResult(calculateResult)
+
+        ansData.storage.push(calculateResult)
+
+        updateData()
+        resetData()
+        updateResult(formattedResult)
+        return
+    }
+
+    else if (joinResult.includes('*')) {
+        let newResult = joinResult.split('*');
+        let calculateResult = calculate('*', ...newResult);
+        let formattedResult = formatResult(calculateResult)
+
+        ansData.storage.push(calculateResult)
+
+        updateData()
+        resetData()
+        updateResult(formattedResult)
+        return
+    } 
+
+    else if (joinResult.includes('/')) {
+        let newResult = joinResult.split('/');
+        let calculateResult = calculate('/', ...newResult);
+        let formattedResult = formatResult(calculateResult)
+
+        ansData.storage.push(calculateResult)
+
+        updateData()
+        resetData()
+        updateResult(formattedResult)
+        return
+    }
+
+    else if (joinResult.includes('%')) {
+        let newResult = joinResult.split('%');
+        let calculateResult = calculate('%', ...newResult);
+        let formattedResult = formatResult(calculateResult)
+
+        ansData.storage.push(calculateResult)
+
+        updateData()
+        resetData()
+        updateResult(formattedResult)
+        return
+    }
+    
+}
+
+// Delete values
+const deleteDataValues = () => {
+    calcData.operation.pop();
+    calcData.result.pop();
+}
+
+// Push input to data 
+const inputData = (input) => {
+    calcData.operation.push(input)
+    calcData.result.push(input)
 }
 
 // Reset calculator data
@@ -336,24 +388,18 @@ const resetData = () => {
     calcData.result = [];
 }
 
-const resetStorage = () => {
-    ansData.storage = [];
-}
+const resetStorage = () => {ansData.storage = []}
 
 // Update output display element
-const updateResult = (result) => {
-    resultDisplayElement.innerHTML = result
-}
+const updateResult = (result) => {resultDisplayElement.innerHTML = result}
 
 // Update input display element
-const updateInput = (input) => {
-    inputDisplayElement.innerHTML = input
-}
+const updateInput = (input) => {inputDisplayElement.innerHTML = input}
 
 // Format result 
 const formatResult = (calculateResult) => {
-    const maxLength = 6;
-    const outputLength = 5
+    const maxLength = 8;
+    const outputLength = 4
 
     if (resultLength(calculateResult) > maxLength) {
         if (isFloat(calculateResult)) {
@@ -366,7 +412,8 @@ const formatResult = (calculateResult) => {
 
             else {
                 const decimalLength = maxLength - resultIntLength
-                return calculateResult.toFixed(decimalLength)
+                const simplifiedLength = calculateResult.toFixed(decimalLength)
+                return `${simplifiedLength}...`
             }
         } 
         
@@ -381,11 +428,7 @@ const formatResult = (calculateResult) => {
 }
 
 // Float/Int
-const isFloat = (number) => {
-    return number % 1 !=0;
-}
+const isFloat = (number) => {return number % 1 !=0;}
 
 // result length
-const resultLength = (number) => {
-    return number.toString().length;
-}
+const resultLength = (number) => {return number.toString().length;}
