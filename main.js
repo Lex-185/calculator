@@ -1,123 +1,63 @@
 let calculatorButtons = [
     {
-        name: '7',
-        symbol: 7,
-        formula: 7,
-        type: 'number'
+        name: '7', symbol: 7, formula: 7, type: 'number'
     },
     {
-        name: '8',
-        symbol: 8,
-        formula: 8,
-        type: 'number'
+        name: '8', symbol: 8, formula: 8, type: 'number'
     },
     {
-        name: '9',
-        symbol: 9,
-        formula: 9,
-        type: 'number'
+        name: '9', symbol: 9, formula: 9, type: 'number'
     },
     {
-        name: 'delete',
-        symbol: 'DEL',
-        formula: false,
-        type: 'key'
+        name: 'delete', symbol: 'DEL', formula: false, type: 'key'
     },
     {
-        name: 'clear',
-        symbol: 'AC',
-        formula: false,
-        type: 'key'
+        name: 'clear', symbol: 'AC', formula: false, type: 'key'
     },
     {
-        name: '4',
-        symbol: 4,
-        formula: 4,
-        type: 'number'
+        name: '4', symbol: 4, formula: 4, type: 'number'
     },
     {
-        name: '5',
-        symbol: 5,
-        formula: 5,
-        type: 'number'
+        name: '5', symbol: 5, formula: 5, type: 'number'
     },
     {
-        name: '6',
-        symbol: 6,
-        formula: 6,
-        type: 'number'
+        name: '6', symbol: 6, formula: 6, type: 'number'
     },
     {
-        name: 'multiplication',
-        symbol: 'x',
-        formula: '*',
-        type: 'operator'
+        name: 'multiplication', symbol: 'x', formula: '*', type: 'operator'
     },
     {
-        name: 'division',
-        symbol: '÷',
-        formula: '/',
-        type: 'operator'
+        name: 'division', symbol: '÷', formula: '/', type: 'operator'
     },
     {
-        name: '1',
-        symbol: 1,
-        formula: 1,
-        type: 'number'
+        name: '1', symbol: 1, formula: 1, type: 'number'
     },
     {
-        name: '2',
-        symbol: 2,
-        formula: 2,
-        type: 'number'
+        name: '2', symbol: 2, formula: 2, type: 'number'
     },
     {
-        name: '3',
-        symbol: 3,
-        formula: 3,
-        type: 'number'
+        name: '3', symbol: 3, formula: 3, type: 'number'
     },
     {
-        name: 'addition',
-        symbol: '+',
-        formula: '+',
-        type: 'operator'
+        name: 'addition', symbol: '+', formula: '+', type: 'operator'
     },
     {
-        name: 'subtraction',
-        symbol: '-',
-        formula: '-',
-        type: 'operator'
+        name: 'subtraction', symbol: '-', formula: '-', type: 'operator'
     },
     {
-        name: '0',
-        symbol: 0,
-        formula: 0,
-        type: 'number'
+        name: '0', symbol: 0, formula: 0, type: 'number'
     },
     {
-        name: 'decimal',
-        symbol: '.',
-        formula: '.',
-        type: 'number'
+        name: 'decimal', symbol: '.', formula: '.', type: 'number'
     },
     {
-        name: 'answer',
-        symbol: 'Ans',
-        formula: false,
-        type: 'key'
+        name: 'answer', symbol: 'Ans', formula: false, type: 'key'
     },
     {
-        name: 'percent',
-        symbol: '%',
-        formula: '%',
-        type: 'number'
+        name: 'percent', symbol: '%', formula: '%', type: 'number'
     },
     {
-        name: 'equals',
-        symbol: '=',
-        formula: false,
-        type: 'operate'
+        name: 'equals', symbol: '=', formula: false, type: 'operate'
     },
 ];
 
@@ -149,29 +89,25 @@ createButton()
 inputElement.addEventListener('click', (e) => {
     const selectBtn = e.target;
     calculatorButtons.forEach(btn => {
-        if (btn.name == selectBtn.id) {
-            operate(btn);
-        }
+        if (btn.name == selectBtn.id) {operate(btn)}
     })
 })
 
 // Keydown event
-window.addEventListener('keydown', (e) => {
-   keyPress(e)
-})
+window.addEventListener('keydown', (e) => {keyPress(e)})
 
 // keypress 
 const keyPress = (e) => {
-    if (e.key === 'Enter') {
-        validateOperators()
-    }
+    let joinResult = calcData.operation.join('')
+
+    if (e.key === 'Enter') {validateOperators()}
 
     if (e.key === 'Backspace') {
         deleteDataValues()
         updateInput(calcData.operation)
     }
 
-    if (e.key >= 0 && e.key <= 9) {
+    if (e.key >= 0 || e.key <= 9) {
         inputData(e.key)
         updateInput(calcData.operation)
     } 
@@ -217,12 +153,12 @@ const multiply = (...num) => {
 };
 
 const divide = (...num) => {
-    result = num.reduce((x,y) => parseFloat(x) /parseFloat(y))
+    result = num.reduce((x,y) => parseFloat(x) / parseFloat(y))
     return result
 };
 
 const remainder = (...num) => {
-    result = num.reduce((x,y) => parseFloat(x) %parseFloat(y))
+    result = num.reduce((x,y) => parseFloat(x) % parseFloat(y))
     return result
 };
 
@@ -230,8 +166,8 @@ const remainder = (...num) => {
 const calculate = (operator, ...num) => {
     if (operator === '+') {
         return add(...num)
-    } 
-    
+    }
+
     else if (operator === '-') {
         return sub(...num)
     }
@@ -284,7 +220,7 @@ const operate = (btn) => {
 
         if (btn.name === 'answer') {
            inputData(ansData.storage)
-           resultDisplayElement.innerHTML = ''
+           updateResult('')
         }
     } 
     
@@ -307,67 +243,68 @@ const validateOperators = () => {
         let newResult = joinResult.split('+');
         let calculateResult = calculate('+', ...newResult);
         let formattedResult = formatResult(calculateResult)
-
-        ansData.storage.push(calculateResult)
         
+        updateStorage(calculateResult)
         updateData()
         resetData()
         updateResult(formattedResult)
         return
     } 
 
-    else if (joinResult.includes('-')) {
+    if (joinResult.includes('-')) {
         let newResult = joinResult.split('-');
         let calculateResult = calculate('-', ...newResult);
         let formattedResult = formatResult(calculateResult)
 
-        ansData.storage.push(calculateResult)
-
+        updateStorage(calculateResult)
         updateData()
         resetData()
         updateResult(formattedResult)
         return
     }
 
-    else if (joinResult.includes('*')) {
+    if (joinResult.includes('*')) {
         let newResult = joinResult.split('*');
         let calculateResult = calculate('*', ...newResult);
         let formattedResult = formatResult(calculateResult)
 
-        ansData.storage.push(calculateResult)
-
+        
+        updateStorage(calculateResult)
         updateData()
         resetData()
         updateResult(formattedResult)
         return
     } 
 
-    else if (joinResult.includes('/')) {
+    if (joinResult.includes('/')) {
         let newResult = joinResult.split('/');
         let calculateResult = calculate('/', ...newResult);
         let formattedResult = formatResult(calculateResult)
 
-        ansData.storage.push(calculateResult)
-
+        updateStorage(calculateResult)
         updateData()
         resetData()
         updateResult(formattedResult)
         return
     }
 
-    else if (joinResult.includes('%')) {
+    if (joinResult.includes('%')) {
         let newResult = joinResult.split('%');
         let calculateResult = calculate('%', ...newResult);
         let formattedResult = formatResult(calculateResult)
 
-        ansData.storage.push(calculateResult)
-
+        updateStorage(calculateResult)
         updateData()
         resetData()
         updateResult(formattedResult)
         return
     }
     
+}
+
+// Update storage
+const updateStorage = (value) => {
+    ansData.storage.push(value)
 }
 
 // Delete values
@@ -388,6 +325,7 @@ const resetData = () => {
     calcData.result = [];
 }
 
+// Reset storage
 const resetStorage = () => {ansData.storage = []}
 
 // Update output display element
