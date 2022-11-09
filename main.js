@@ -99,7 +99,6 @@ window.addEventListener('keydown', (e) => {keyPress(e)})
 // keypress 
 const keyPress = (e) => {
     let joinResult = calcData.operation.join('')
-
     if (e.key === 'Enter') {validateOperators()}
 
     if (e.key === 'Backspace') {
@@ -108,29 +107,40 @@ const keyPress = (e) => {
     }
 
     if (e.key >= 0 || e.key <= 9) {
+        joinResult += e.key
         inputData(e.key)
-        updateInput(calcData.operation)
+        updateInput(joinResult)
     } 
 
-    if (e.key === '+' || e.key === '-') {
+    if (e.key === '.') {
+        joinResult += e.key
         inputData(e.key)
-        updateInput(calcData.operation)
+        updateInput(joinResult)
+    }
+
+    if (e.key === '+' || e.key === '-') {
+        joinResult += e.key
+        inputData(e.key)
+        updateInput(joinResult)
     }
 
     if (e.key === '*') {
+        joinResult += e.key
         inputData(e.key)
-        updateInput(calcData.operation)
+        updateInput(joinResult)
     } 
 
     if (e.key === '/') {
+        joinResult += e.key
         inputData(e.key)
-        updateInput(calcData.operation)
+        updateInput(joinResult)
         
     }
 
     if (e.key === '%') {
+        joinResult += e.key
         inputData(e.key)
-        updateInput(calcData.operation)
+        updateInput(joinResult)
     }
 }
 
@@ -168,45 +178,32 @@ const calculate = (operator, ...num) => {
         return add(...num)
     }
 
-    else if (operator === '-') {
+    if (operator === '-') {
         return sub(...num)
     }
 
-    else if (operator === '*') {
+    if (operator === '*') {
         return multiply(...num)
     }
     
-    else if (operator === '/') {
+    if (operator === '/') {
         return divide(...num)
     } 
 
-    else if (operator === '%') {
+    if (operator === '%') {
         return remainder(...num)
     }
 }
 
-// Calculator data
-let calcData = {
-    operation : [],
-    result : []
-}
-
-// Store Answer
-let ansData = {
-    storage : []
-} 
-
 // Operate function 
 const operate = (btn) => {
     if (btn.type === 'operator') {
-        calcData.operation.push(btn.symbol);
-        calcData.result.push(btn.formula);
+        displaySymbol(btn.symbol, btn.formula)
     } 
     
     else if (btn.type === 'number') {
-        calcData.operation.push(btn.symbol);
-        calcData.result.push(btn.formula);
-    } 
+        displaySymbol(btn.symbol, btn.formula)
+    }
     
     else if (btn.type === 'key') {
         if (btn.name === 'clear') {
@@ -220,86 +217,77 @@ const operate = (btn) => {
 
         if (btn.name === 'answer') {
            inputData(ansData.storage)
+           resetStorage()
            updateResult('')
         }
-    } 
-    
-    else if (btn.type === 'operate') {
-        validateOperators()
     }
+    
+    else if (btn.type === 'operate') {validateOperators()};
+
     updateInput(calcData.operation.join(''))
 }
 
 // Validate operators
 const validateOperators = () => {
-    const updateData = () => {
-        inputData(calculateResult)
-    }
-
     let joinResult = calcData.result.join('');
-    let calculateResult = '';
-
-    if (joinResult.includes('+')) {
-        let newResult = joinResult.split('+');
-        let calculateResult = calculate('+', ...newResult);
-        let formattedResult = formatResult(calculateResult)
-        
-        updateStorage(calculateResult)
-        updateData()
-        resetData()
-        updateResult(formattedResult)
-        return
-    } 
-
-    if (joinResult.includes('-')) {
-        let newResult = joinResult.split('-');
-        let calculateResult = calculate('-', ...newResult);
-        let formattedResult = formatResult(calculateResult)
-
-        updateStorage(calculateResult)
-        updateData()
-        resetData()
-        updateResult(formattedResult)
-        return
-    }
-
+ 
     if (joinResult.includes('*')) {
-        let newResult = joinResult.split('*');
-        let calculateResult = calculate('*', ...newResult);
-        let formattedResult = formatResult(calculateResult)
-
-        
-        updateStorage(calculateResult)
-        updateData()
-        resetData()
-        updateResult(formattedResult)
+        handleData('*')
         return
     } 
 
-    if (joinResult.includes('/')) {
-        let newResult = joinResult.split('/');
-        let calculateResult = calculate('/', ...newResult);
-        let formattedResult = formatResult(calculateResult)
-
-        updateStorage(calculateResult)
-        updateData()
-        resetData()
-        updateResult(formattedResult)
+    else if (joinResult.includes('/')) {
+        handleData('/')
         return
     }
 
-    if (joinResult.includes('%')) {
-        let newResult = joinResult.split('%');
-        let calculateResult = calculate('%', ...newResult);
-        let formattedResult = formatResult(calculateResult)
+    else if (joinResult.includes('+')) {
+        handleData('+')
+        return
+    } 
 
-        updateStorage(calculateResult)
-        updateData()
-        resetData()
-        updateResult(formattedResult)
+    else if (joinResult.includes('-')) {
+        handleData('-')
         return
     }
-    
+
+    else if (joinResult.includes('%')) {
+        handleData('%')
+        return
+    }
+}
+
+// Handle Data
+const handleData = (x) => {
+    let joinResult = calcData.result.join('');
+    newResult = joinResult.split(x);
+    calculateResult = calculate(x, ...newResult)
+    formattedResult = formatResult(calculateResult)
+    updateStorage(calculateResult)
+    inputData()
+    resetData()
+    updateResult(formattedResult)
+}
+
+// Calculator data
+let calcData = {
+    operation : [],
+    result : []
+}
+
+// Store Answer
+let ansData = {
+    storage : []
+} 
+
+// Temp storage
+let tempStorage = {
+    storage : []
+}
+
+const displaySymbol = (symbol, formula) => {
+    calcData.operation.push(symbol);
+    calcData.result.push(formula);
 }
 
 // Update storage
