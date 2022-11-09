@@ -66,6 +66,7 @@ const inputDisplayElement = document.querySelector('#inputDisplay');
 const resultDisplayElement = document.querySelector('#resultDisplay');
 const inputElement = document.querySelector('#calcInput')
 
+
 // Create Buttons
 const createButton = () => {
     const buttonsPerRow = 5;
@@ -99,14 +100,19 @@ window.addEventListener('keydown', (e) => {keyPress(e)})
 // keypress 
 const keyPress = (e) => {
     let joinResult = calcData.operation.join('')
-    if (e.key === 'Enter') {validateOperators()}
+    
+    if (e.key === 'Enter') {
+        updateInput('')
+        validateOperators()
+        updateResult(formattedResult)
+    }
 
     if (e.key === 'Backspace') {
         deleteDataValues()
         updateInput(calcData.operation)
     }
 
-    if (e.key >= 0 || e.key <= 9) {
+    if (e.key >= 0 && e.key <= 9 ) {
         joinResult += e.key
         inputData(e.key)
         updateInput(joinResult)
@@ -198,6 +204,7 @@ const calculate = (operator, ...num) => {
 // Operate function 
 const operate = (btn) => {
     if (btn.type === 'operator') {
+        handleOperator()
         displaySymbol(btn.symbol, btn.formula)
     } 
     
@@ -216,13 +223,19 @@ const operate = (btn) => {
         }
 
         if (btn.name === 'answer') {
+            
            inputData(ansData.storage)
            resetStorage()
            updateResult('')
+           
         }
     }
     
-    else if (btn.type === 'operate') {validateOperators()};
+    else if (btn.type === 'operate') {
+        updateInput()
+        validateOperators()
+        updateResult(formattedResult)
+    };
 
     updateInput(calcData.operation.join(''))
 }
@@ -230,28 +243,29 @@ const operate = (btn) => {
 // Validate operators
 const validateOperators = () => {
     let joinResult = calcData.result.join('');
- 
+    let newResult = joinResult.split('')
+
     if (joinResult.includes('*')) {
         handleData('*')
         return
     } 
 
-    else if (joinResult.includes('/')) {
+    if (joinResult.includes('/')) {
         handleData('/')
         return
     }
 
-    else if (joinResult.includes('+')) {
+    if (joinResult.includes('+')) {
         handleData('+')
         return
     } 
 
-    else if (joinResult.includes('-')) {
+    if (joinResult.includes('-')) {
         handleData('-')
         return
     }
 
-    else if (joinResult.includes('%')) {
+    if (joinResult.includes('%')) {
         handleData('%')
         return
     }
@@ -261,12 +275,24 @@ const validateOperators = () => {
 const handleData = (x) => {
     let joinResult = calcData.result.join('');
     newResult = joinResult.split(x);
-    calculateResult = calculate(x, ...newResult)
+    console.log(newResult[0], newResult[1]);
+    calculateResult = calculate(x, newResult[0], newResult[1])
     formattedResult = formatResult(calculateResult)
+   
     updateStorage(calculateResult)
-    inputData()
     resetData()
-    updateResult(formattedResult)
+}
+
+// Handle operator
+const handleOperator = () => {
+    let joinResult = calcData.result.join('');
+    let newResult = joinResult.split('')
+
+    if ((newResult.includes('*') || newResult.includes('/')) || (newResult.includes('+') || newResult.includes('-')) || newResult.includes('%')) {
+        validateOperators()
+        inputData(calculateResult)
+        resetStorage()
+    }
 }
 
 // Calculator data
@@ -285,6 +311,7 @@ let tempStorage = {
     storage : []
 }
 
+// Display symbol
 const displaySymbol = (symbol, formula) => {
     calcData.operation.push(symbol);
     calcData.result.push(formula);
